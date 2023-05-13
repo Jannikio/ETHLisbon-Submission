@@ -64,19 +64,19 @@ contract SwapContract is Ownable {
         uint256 minReturn,
         uint256[] memory distribution,
         uint256 flags
-    ) external {
-        require(fromToken.transferFrom(msg.sender, address(this), amount), "Transfer failed");
+    ) external onlyOwner(){
         require(fromToken.approve(address(onesplit), amount), "Approval failed");
-
+        require(fromToken.transferFrom(msg.sender, address(this), amount), "Transfer failed");
+        
         onesplit.swap(fromToken, destToken, amount, minReturn, distribution, flags);
 
         address follower = followers[msg.sender];
         uint256 followerAmount = balances[follower][fromToken];
 
         if (followerAmount >= amount && amount > (balances[msg.sender][fromToken] / 2)) {
-            require(fromToken.transferFrom(follower, address(this), followerAmount), "Transfer failed");
             require(fromToken.approve(address(onesplit), followerAmount), "Approval failed");
-
+            require(fromToken.transferFrom(follower, address(this), followerAmount), "Transfer failed");
+            
             onesplit.swap(fromToken, destToken, followerAmount, minReturn, distribution, flags);
             emit SwapExecuted(follower, address(fromToken), address(destToken), followerAmount);
         }
