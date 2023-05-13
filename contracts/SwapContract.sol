@@ -62,7 +62,7 @@ contract SwapContract is Ownable {
         IERC20 destToken,
         uint256 amount,
         uint256 minReturn,
-        uint256[] memory distribution,
+        uint256[] calldata distribution,
         uint256 flags
     ) external onlyOwner(){
         require(fromToken.approve(address(onesplit), amount), "Approval failed");
