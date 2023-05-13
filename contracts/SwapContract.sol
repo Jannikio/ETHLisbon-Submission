@@ -17,6 +17,20 @@ interface IOneSplit {
         external
         payable
         returns(uint256 returnAmount);
+
+    function getExpectedReturn(
+        IERC20 fromToken,
+        IERC20 destToken,
+        uint256 amount,
+        uint256 parts,
+        uint256 flags
+    )
+        external
+        view
+        returns(
+            uint256 returnAmount,
+            uint256[] memory distribution
+        );
 }
 
 contract SwapContract is Ownable {
@@ -25,7 +39,8 @@ contract SwapContract is Ownable {
     mapping(address => mapping(IERC20 => uint256)) public balances;
     mapping(address => address) public followers;
 
-    event SwapExecuted(address destToken, address toToken);
+    event Deposit(address indexed user, address token, uint256 amount);
+    event SwapExecuted(address indexed user, address fromToken, uint256 fromTokenAmount, address destToken, uint256 destTokenAmount);
     event Withdrawal(address indexed user, uint256 amount);
 
     constructor(IOneSplit _onesplit) {
@@ -38,7 +53,7 @@ contract SwapContract is Ownable {
     
         balances[msg.sender][token] += amount;
         followers[msg.sender] = follower;
-
+        emit Deposit(msg.sender, address(token), amount);
     }
 
     function withdrawERC20(IERC20 token, uint256 amount) external {
@@ -49,18 +64,19 @@ contract SwapContract is Ownable {
 
         emit Withdrawal(msg.sender, amount);
     }
-    /*
+
     function executeSwap(
         IERC20 fromToken,
         IERC20 destToken,
         uint256 amount,
-        uint256 minReturn,
-        uint256[] calldata distribution,
+        uint256 parts,
         uint256 flags
-    ) external onlyOwner(){
-            onesplit.swap(fromToken, destToken, minReturn, distribution, flags);
-            emit SwapExecuted(address(fromToken), address(destToken));
-    }
-    */
+    ) external onlyOwner() {
 
+        (uint256 returnAmount, uint256[] memory distribution) = onesplit.getExpectedReturn(fromToken, destToken, amount, parts, flags);
+
+        uint256 destTokenAmount = onesplit.swap(fromToken, destToken, amount, returnAmount, distribution, flags);
+
+        emit SwapExecuted(msg.sender, address(fromToken), amount, address(destToken), destTokenAmount);
+    }   
 }
