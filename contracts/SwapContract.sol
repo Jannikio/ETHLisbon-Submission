@@ -11,7 +11,7 @@ interface IOneSplit {
         IERC20 destToken,
         uint256 amount,
         uint256 minReturn,
-        uint256[] calldata distribution,
+        uint256[] memory distribution,
         uint256 flags
     )
         external
