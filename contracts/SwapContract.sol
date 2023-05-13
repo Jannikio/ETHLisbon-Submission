@@ -22,7 +22,6 @@ interface IOneSplit {
 contract SwapContract is Ownable {
     IOneSplit public onesplit;
 
-    mapping(address => uint256) public deposits;
     mapping(address => mapping(IERC20 => uint256)) public balances;
     mapping(address => address) public followers;
 
@@ -40,7 +39,6 @@ contract SwapContract is Ownable {
         balances[msg.sender][token] += amount;
         followers[msg.sender] = follower;
 
-        deposits[msg.sender] += amount;
     }
 
     function withdrawERC20(IERC20 token, uint256 amount) external {
