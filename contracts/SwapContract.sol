@@ -57,7 +57,7 @@ contract SwapContract is Ownable {
     }
 
     function withdrawERC20(IERC20 token, uint256 amount) external {
-        require(balances[msg.sender][token] <= amount, "Insufficient funds");
+        require(balances[msg.sender][token] >= amount, "Insufficient funds");
 
         balances[msg.sender][token] -= amount;
         require(token.transfer(msg.sender, amount), "Transfer failed");
