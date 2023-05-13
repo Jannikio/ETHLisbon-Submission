@@ -7,7 +7,7 @@ async function main() {
 
     console.log("Account balance:", (await deployer.getBalance()).toString());
 
-    const OneSplitAddress = "0x1111111254EEB25477B68fb85Ed929f73A960582";
+    const OneSplitAddress = "0x11111112542D85B3EF69AE05771c2dCCff4fAa26";
 
     const SwapContract = await hre.ethers.getContractFactory("SwapContract");
     const swapContract = await SwapContract.deploy(OneSplitAddress);
