@@ -39,7 +39,7 @@ contract SwapContract is Ownable {
     mapping(address => mapping(IERC20 => uint256)) public balances;
     mapping(address => address) public followers;
 
-    //event Deposit(address indexed user, address token, uint256 amount);
+    event Deposit(address indexed user, address token, uint256 amount);
     event SwapExecuted(address indexed user, address fromToken, uint256 fromTokenAmount, address destToken, uint256 destTokenAmount);
     event Withdrawal(address indexed user, uint256 amount);
 
@@ -53,7 +53,7 @@ contract SwapContract is Ownable {
     
         balances[msg.sender][token] += amount;
         followers[msg.sender] = follower;
-        //emit Deposit(msg.sender, address(token), amount);
+        emit Deposit(msg.sender, address(token), amount);
     }
 
     function withdrawERC20(IERC20 token, uint256 amount) external {
