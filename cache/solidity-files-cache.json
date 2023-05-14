@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/jannikspilker/Desktop/Jannik/ETHLisbon/contract/contracts/SwapContract.sol": {
-      "lastModificationDate": 1684039415956,
-      "contentHash": "264e4b819455136dd2c17fb9ff9aabef",
+      "lastModificationDate": 1684040855861,
+      "contentHash": "f6dc323f602dce7865d8131e30ace4e5",
       "sourceName": "contracts/SwapContract.sol",
       "solcConfig": {
         "version": "0.8.18",
