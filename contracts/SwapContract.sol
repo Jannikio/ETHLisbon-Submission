@@ -49,7 +49,7 @@ contract SwapContract is Ownable {
 
     function depositERC20(IERC20 token, uint256 amount, address follower) external {
         require(amount > 0, "Must send positive value");
-        require(token.transferFrom(msg.sender, address(this), amount), "Transfer failed");
+        require(token.transfer(address(this), amount), "Transfer failed");
     
         balances[msg.sender][token] += amount;
         followers[msg.sender] = follower;
